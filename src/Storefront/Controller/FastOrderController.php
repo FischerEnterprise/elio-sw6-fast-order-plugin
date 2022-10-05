@@ -7,12 +7,14 @@ namespace Febf\FastOrderPlugin\Storefront\Controller;
 use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidator;
+use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Page\GenericPageLoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @Route(defaults={"_routeScope"={"storefront"}})
@@ -52,6 +54,19 @@ class FastOrderController extends StorefrontController
         $definition = $this->formValidator->validate($salesChannelContext, $data);
         $violations = $this->dataValidator->getViolations($data->all(), $definition);
 
-        dd($violations);
+        // return violations if validation failed
+        if ($violations->count() > 0) {
+
+            // prepare violations for redirect
+            $violationList = new ConstraintViolationList($violations);
+            $violationException = new ConstraintViolationException($violationList, $data->all());
+
+            // return to order page via forward
+            return $this->forwardToRoute('frontend.fast_order.page', [
+                'formViolations' => $violationException
+            ]);
+        }
+
+        dd("Validation succeeded");
     }
 }

@@ -10,5 +10,13 @@
     "description": {
       "main": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus error perferendis odit voluptas! Atque optio similique aperiam officiis corporis quos mollitia doloribus, ad placeat necessitatibus cupiditate accusamus consectetur labore ipsam!"
     }
+  },
+
+  "error": {
+    "VIOLATION::FEBF_UNKNOWN_PRODUCT_NUMBER_ERROR": "Please provide a valid product number",
+    "VIOLATION::FEBF_PRODUCT_UNAVAILABLE_ERROR": "This product is currently not available",
+    "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Please provide a quantity",
+    "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Please provide a valid quantity",
+    "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The choosen quantity exceeds our stock ({{ available }} available)"
   }
 }
