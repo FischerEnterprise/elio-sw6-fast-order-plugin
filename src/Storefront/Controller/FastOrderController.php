@@ -6,6 +6,7 @@ namespace Febf\FastOrderPlugin\Storefront\Controller;
 
 use Febf\FastOrderPlugin\Services\FastOrderDataService;
 use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
+use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
@@ -47,15 +48,22 @@ class FastOrderController extends StorefrontController
     {
         $page = $this->genericPageLoader->load($request, $salesChannelContext);
 
+        // translate custom quantity violations
+        $quantityViolations = [];
+        foreach ($request->get('quantityViolations', []) as $quantityViolation) {
+            $quantityViolations[] = $this->trans($quantityViolation['message'], $quantityViolation['args']);
+        }
+
         return $this->renderStorefront('@FastOrderPlugin/storefront/page/fast-order/_page.html.twig', [
             "page" => $page,
+            "quantityViolations" => $quantityViolations
         ]);
     }
 
     /**
      * @Route("/fast-order", name="frontend.fast_order.store", methods={"POST"})
      */
-    public function store(RequestDataBag $data, SalesChannelContext $salesChannelContext): Response
+    public function store(RequestDataBag $data, SalesChannelContext $salesChannelContext, Cart $cart): Response
     {
         // validate input data
         $definition = $this->formValidator->validate($salesChannelContext, $data);
@@ -76,6 +84,21 @@ class FastOrderController extends StorefrontController
 
         // merge order data
         $mergedData = $this->dataService->mergeOrderData($data->all());
+
+        // merge provided data with cart
+        $cartQuantityViolations = $this->dataService->mergeWithCart($mergedData, $salesChannelContext, $cart);
+
+        // return violations if mergeWithCart failed
+        if (count($cartQuantityViolations) > 0) {
+            // create empty violation exception to preserve data
+            $violationException = new ConstraintViolationException(new ConstraintViolationList([]), $data->all());
+
+            // return to order page via forward
+            return $this->forwardToRoute('frontend.fast_order.page', [
+                'formViolations' => $violationException,
+                'quantityViolations' => $cartQuantityViolations,
+            ]);
+        }
 
         dd("Data validated", $mergedData);
     }
