@@ -1,0 +1,14 @@
+{
+  "fast_order_plugin": {
+    "fast_order": "Fast Order",
+
+    "product_number": "Product Number",
+    "quantity": "Quantity",
+
+    "add_to_cart": "Add to cart",
+
+    "description": {
+      "main": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus error perferendis odit voluptas! Atque optio similique aperiam officiis corporis quos mollitia doloribus, ad placeat necessitatibus cupiditate accusamus consectetur labore ipsam!"
+    }
+  }
+}
