@@ -4,7 +4,7 @@
 
 	<div class="col-auto">
 		<div class="header-fast-order">
-			<a class="btn header-fast-order-btn header-actions-btn" href="{{ path('frontend.fast_order.page') }}" title="Fast Order Plugin" aria-label="Fast Order Plugin">
+			<a class="btn header-fast-order-btn header-actions-btn" href="{{ path('frontend.fast_order.page') }}" title="{{ 'fast_order_plugin.fast_order' |trans |striptags }}" aria-label="{{ 'fast_order_plugin.fast_order' |trans |striptags }}">
 				{% sw_include '@FastOrderPlugin/storefront/layout/header/actions/fast-order-widget.html.twig' %}
 			</a>
 		</div>
@@ -12,5 +12,3 @@
 
 	{{ parent() }}
 {% endblock %}
-
-{# TODO: Add translations #}
