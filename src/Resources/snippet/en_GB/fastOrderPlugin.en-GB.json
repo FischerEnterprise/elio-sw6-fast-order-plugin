@@ -8,7 +8,7 @@
     "add_to_cart": "Add to cart",
 
     "description": {
-      "main": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus error perferendis odit voluptas! Atque optio similique aperiam officiis corporis quos mollitia doloribus, ad placeat necessitatibus cupiditate accusamus consectetur labore ipsam!"
+      "main": "Please enter the articles and quantities you want to order. The availability of the article is checked after submitting the form. Adding the entered items to your cart, will merge them with your current cart contents."
     }
   },
 
