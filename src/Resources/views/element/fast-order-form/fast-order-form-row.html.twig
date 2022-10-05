@@ -1,0 +1,33 @@
+{% block fast_order_form_row %}
+
+	{% set articleFieldId = 'fast-order-article-' ~ rowCount %}
+	{% set qttyFieldId = 'fast-order-qtty-' ~ rowCount %}
+
+	<div class="order-list-row-container row mt-2">
+		<div class="col-8">
+			{% sw_include '@FastOrderPlugin/element/undecorated-form-input.html.twig'
+				with {
+                    fieldName: articleFieldId,
+					fieldId: articleFieldId,
+                    required: false,
+                    placeholder: 'Product Number',
+					additionalClass: "mb-0"
+                }
+			%}
+		</div>
+		<div class="col-4">
+			{% sw_include '@FastOrderPlugin/element/undecorated-form-input.html.twig'
+				with {
+					type: 'number',
+					fieldId: qttyFieldId,
+                    fieldName: qttyFieldId,
+                    required: false,
+                    placeholder: 'Quantity',
+					additionalClass: "mb-0"
+                }
+			%}
+		</div>
+	</div>
+{% endblock %}
+
+{# TODO: Add translation #}

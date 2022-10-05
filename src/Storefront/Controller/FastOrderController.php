@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Febf\FastOrderPlugin\Storefront\Controller;
 
+use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Page\GenericPageLoaderInterface;
@@ -34,5 +35,13 @@ class FastOrderController extends StorefrontController
         return $this->renderStorefront('@FastOrderPlugin/storefront/page/fast-order/_page.html.twig', [
             "page" => $page,
         ]);
+    }
+
+    /**
+     * @Route("/fast-order", name="frontend.fast_order.store", methods={"POST"})
+     */
+    public function store(RequestDataBag $data): Response
+    {
+        dd($data);
     }
 }
