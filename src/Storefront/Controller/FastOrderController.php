@@ -55,8 +55,9 @@ class FastOrderController extends StorefrontController
         }
 
         return $this->renderStorefront('@FastOrderPlugin/storefront/page/fast-order/_page.html.twig', [
-            "page" => $page,
-            "quantityViolations" => $quantityViolations
+            'page' => $page,
+            'quantityViolations' => $quantityViolations,
+            'emptyDataViolation' => $request->get('emptyDataViolation', false)
         ]);
     }
 
@@ -85,21 +86,37 @@ class FastOrderController extends StorefrontController
         // merge order data
         $mergedData = $this->dataService->mergeOrderData($data->all());
 
+        // check for empty data
+        if (count($mergedData) === 0) {
+            return $this->returnCustomViolations('emptyDataViolation', true, $data->all());
+        }
+
         // merge provided data with cart
         $cartQuantityViolations = $this->dataService->mergeWithCart($mergedData, $salesChannelContext, $cart);
 
         // return violations if mergeWithCart failed
         if (count($cartQuantityViolations) > 0) {
-            // create empty violation exception to preserve data
-            $violationException = new ConstraintViolationException(new ConstraintViolationList([]), $data->all());
-
-            // return to order page via forward
-            return $this->forwardToRoute('frontend.fast_order.page', [
-                'formViolations' => $violationException,
-                'quantityViolations' => $cartQuantityViolations,
-            ]);
+            return $this->returnCustomViolations('quantityViolations', $cartQuantityViolations, $data->all());
         }
 
         dd("Data validated", $mergedData);
+    }
+
+    /**
+     * Create forward response to return custom violations with data
+     *
+     * @param  string $violationKey
+     * @param  mixed $violationData
+     * @param  array $formData
+     * @return Response
+     */
+    private function returnCustomViolations(string $violationKey, $violationData, array $formData): Response
+    {
+        $violationException = new ConstraintViolationException(new ConstraintViolationList([]), $formData);
+
+        return $this->forwardToRoute('frontend.fast_order.page', [
+            'formViolations' => $violationException,
+            $violationKey => $violationData
+        ]);
     }
 }

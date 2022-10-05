@@ -45,6 +45,13 @@
 									{% endif %}
 								{% endblock %}
 
+								{% if emptyDataViolation %}
+									{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+										type: 'danger',
+										content: 'error.fast_order.empty_order'| trans
+									} %}
+								{% endif %}
+
 								{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-header.html.twig' %}
 
 								<div class="fast-order-form-input-list">

@@ -20,6 +20,7 @@
     "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The choosen quantity exceeds our stock ({{ available }} available)",
 
     "fast_order": {
+      "empty_order": "Please add at least one product to your order",
       "exceeding_stock_heading": "The choosen quantities exceed our stock:",
       "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
       "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
