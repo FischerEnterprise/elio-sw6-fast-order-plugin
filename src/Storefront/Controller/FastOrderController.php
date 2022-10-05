@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Febf\FastOrderPlugin\Storefront\Controller;
 
+use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
+use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Page\GenericPageLoaderInterface;
@@ -19,10 +21,14 @@ class FastOrderController extends StorefrontController
 {
 
     public GenericPageLoaderInterface $genericPageLoader;
+    public DataValidator $dataValidator;
+    public FastOrderFormValidator $formValidator;
 
-    public function __construct(GenericPageLoaderInterface $genericPageLoader)
+    public function __construct(GenericPageLoaderInterface $genericPageLoader, DataValidator $dataValidator, FastOrderFormValidator $formValidator)
     {
         $this->genericPageLoader = $genericPageLoader;
+        $this->dataValidator = $dataValidator;
+        $this->formValidator = $formValidator;
     }
 
     /**
@@ -40,8 +46,12 @@ class FastOrderController extends StorefrontController
     /**
      * @Route("/fast-order", name="frontend.fast_order.store", methods={"POST"})
      */
-    public function store(RequestDataBag $data): Response
+    public function store(RequestDataBag $data, SalesChannelContext $salesChannelContext): Response
     {
-        dd($data);
+        // validate input data
+        $definition = $this->formValidator->validate($salesChannelContext, $data);
+        $violations = $this->dataValidator->getViolations($data->all(), $definition);
+
+        dd($violations);
     }
 }
