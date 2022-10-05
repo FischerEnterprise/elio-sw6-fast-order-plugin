@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Febf\FastOrderPlugin\Storefront\Controller;
 
+use Febf\FastOrderPlugin\Services\FastOrderDataService;
 use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidator;
@@ -25,12 +26,18 @@ class FastOrderController extends StorefrontController
     public GenericPageLoaderInterface $genericPageLoader;
     public DataValidator $dataValidator;
     public FastOrderFormValidator $formValidator;
+    public FastOrderDataService $dataService;
 
-    public function __construct(GenericPageLoaderInterface $genericPageLoader, DataValidator $dataValidator, FastOrderFormValidator $formValidator)
-    {
+    public function __construct(
+        GenericPageLoaderInterface $genericPageLoader,
+        DataValidator $dataValidator,
+        FastOrderFormValidator $formValidator,
+        FastOrderDataService $dataService
+    ) {
         $this->genericPageLoader = $genericPageLoader;
         $this->dataValidator = $dataValidator;
         $this->formValidator = $formValidator;
+        $this->dataService = $dataService;
     }
 
     /**
@@ -67,6 +74,9 @@ class FastOrderController extends StorefrontController
             ]);
         }
 
-        dd("Validation succeeded");
+        // merge order data
+        $mergedData = $this->dataService->mergeOrderData($data->all());
+
+        dd("Data validated", $mergedData);
     }
 }
