@@ -35,6 +35,22 @@
 
 							<div class="col-12 col-md-8 mt-3">
 
+								{% block fast_order_form_content_content_violation_alerts %}
+									{% if not (quantityViolations is empty) %}
+										{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+										type: 'danger',
+										heading: 'error.fast_order.exceeding_stock_heading'| trans,
+										list: quantityViolations
+									} %}
+									{% endif %}
+								{% endblock %}
+
+								{% if emptyDataViolation %}
+									{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+										type: 'danger',
+										content: 'error.fast_order.empty_order'| trans
+									} %}
+								{% endif %}
 
 								{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-header.html.twig' %}
 

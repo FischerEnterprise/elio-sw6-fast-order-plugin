@@ -6,10 +6,14 @@
 
     <services>
 
+        <defaults autowire="true" autoconfigure="true"/>
+        <prototype namespace="Febf\FastOrderPlugin\Services\" resource="../../Services"/>
+
         <service id="Febf\FastOrderPlugin\Storefront\Controller\FastOrderController" public="true">
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
             <argument type="service" id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator"/>
+            <argument type="service" id="Febf\FastOrderPlugin\Services\FastOrderDataService"/>
             
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
