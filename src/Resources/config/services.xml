@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults autowire="true" autoconfigure="true"/>
+        <prototype namespace="Febf\FastOrderPlugin\Services\" resource="../../Services"/>
+
+        <service id="Febf\FastOrderPlugin\Storefront\Controller\FastOrderController" public="true">
+            <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
+            <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
+            <argument type="service" id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator"/>
+            <argument type="service" id="Febf\FastOrderPlugin\Services\FastOrderDataService"/>
+            
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator">
+            <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface"/>
+            <argument type="service" id="product.repository"/>
+        </service>
+
+    </services>
+</container>

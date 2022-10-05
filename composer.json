@@ -1,0 +1,18 @@
+{
+  "name": "febf/fast-order-plugin",
+  "description": "Fast Order Plugin",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Febf\\FastOrderPlugin\\": "src/"
+    }
+  },
+  "extra": {
+    "shopware-plugin-class": "Febf\\FastOrderPlugin\\FastOrderPlugin",
+    "label": {
+      "de-DE": "Fast Order Plugin",
+      "en-GB": "Fast Order Plugin"
+    }
+  }
+}

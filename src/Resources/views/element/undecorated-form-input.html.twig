@@ -1,0 +1,19 @@
+{% block undecorated_form_input %}
+    <div class="form-group {{ additionalClass }}">
+        {% block undecorated_form_input_input %}
+            <input name="{{ fieldName }}"
+                   type="{{ type ?? 'text'}}"
+                   id="{{ fieldName }}"
+                   value="{{ formViolations.getInputData()[fieldName] }}" {# TODO: check data persistance #}
+                   placeholder="{{ placeholder|trans }}"
+                   {% if required %}required="required"{% endif %}
+                   class="form-control{% if formViolations.getViolations( '/' ~ fieldName ) is not empty %} is-invalid{% endif %}"/>
+
+            {% if formViolations.getViolations( '/' ~ fieldName ) is not empty %}
+                {% sw_include '@Storefront/storefront/utilities/form-violation.html.twig' with {
+                    violationPath: ('/' ~ fieldName)
+                } %}
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}

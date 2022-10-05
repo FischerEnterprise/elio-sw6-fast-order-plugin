@@ -1,0 +1,75 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% set formRouteName = 'frontend.fast_order.store' %}
+
+{% block base_content %}
+
+	{% block fast_order_form %}
+		<form action="{{ path(formRouteName) }}" method="post" data-form-csrf-handler="true">
+
+			{% block fast_order_form_csrf %}
+				{{ sw_csrf(formRouteName) }}
+			{% endblock %}
+
+			{% block fast_order_form_content %}
+				<div class="container">
+
+					<div class="row">
+
+						{% block fast_order_form_content_sidebar %}
+
+							<div class="col-12 col-md-4">
+								<h1>{{ 'fast_order_plugin.fast_order' |trans |striptags }}</h1>
+								<p class="mb-5 mb-md-0">
+									{{ 'fast_order_plugin.description.main' |trans |striptags }}
+								</p>
+
+								<button type="submit" class="btn btn-primary position-absolute" style="bottom: 0; left: 20px; right: 20px;">
+									{{ 'fast_order_plugin.add_to_cart' |trans |striptags }}
+								</button>
+							</div>
+
+						{% endblock %}
+
+						{% block fast_order_form_content_content %}
+
+							<div class="col-12 col-md-8 mt-3">
+
+								{% block fast_order_form_content_content_violation_alerts %}
+									{% if not (quantityViolations is empty) %}
+										{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+										type: 'danger',
+										heading: 'error.fast_order.exceeding_stock_heading'| trans,
+										list: quantityViolations
+									} %}
+									{% endif %}
+								{% endblock %}
+
+								{% if emptyDataViolation %}
+									{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+										type: 'danger',
+										content: 'error.fast_order.empty_order'| trans
+									} %}
+								{% endif %}
+
+								{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-header.html.twig' %}
+
+								<div class="fast-order-form-input-list">
+									{% for i in 0..10 %}
+										{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-row.html.twig' with { rowCount: i} %}
+									{% endfor %}
+								</div>
+
+							</div>
+
+						{% endblock %}
+
+					</div>
+
+				</div>
+			{% endblock %}
+
+		</form>
+	{% endblock %}
+
+{% endblock %}

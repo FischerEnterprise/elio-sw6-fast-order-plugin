@@ -1,0 +1,29 @@
+{
+  "fast_order_plugin": {
+    "fast_order": "Fast Order",
+
+    "product_number": "Product Number",
+    "quantity": "Quantity",
+
+    "add_to_cart": "Add to cart",
+
+    "description": {
+      "main": "Please enter the articles and quantities you want to order. The availability of the article is checked after submitting the form. Adding the entered items to your cart, will merge them with your current cart contents."
+    }
+  },
+
+  "error": {
+    "VIOLATION::FEBF_UNKNOWN_PRODUCT_NUMBER_ERROR": "Please provide a valid product number",
+    "VIOLATION::FEBF_PRODUCT_UNAVAILABLE_ERROR": "This product is currently not available",
+    "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Please provide a quantity",
+    "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Please provide a valid quantity",
+    "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The choosen quantity exceeds our stock ({{ available }} available)",
+
+    "fast_order": {
+      "empty_order": "Please add at least one product to your order",
+      "exceeding_stock_heading": "The choosen quantities exceed our stock:",
+      "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
+      "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
+    }
+  }
+}

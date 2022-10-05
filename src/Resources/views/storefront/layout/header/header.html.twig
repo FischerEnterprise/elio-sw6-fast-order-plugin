@@ -1,0 +1,14 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+
+{% block layout_header_actions_cart %}
+
+	<div class="col-auto">
+		<div class="header-fast-order">
+			<a class="btn header-fast-order-btn header-actions-btn" href="{{ path('frontend.fast_order.page') }}" title="{{ 'fast_order_plugin.fast_order' |trans |striptags }}" aria-label="{{ 'fast_order_plugin.fast_order' |trans |striptags }}">
+				{% sw_include '@FastOrderPlugin/storefront/layout/header/actions/fast-order-widget.html.twig' %}
+			</a>
+		</div>
+	</div>
+
+	{{ parent() }}
+{% endblock %}

@@ -1,0 +1,29 @@
+{
+  "fast_order_plugin": {
+    "fast_order": "Schnell Bestellen",
+
+    "product_number": "Produktnummer",
+    "quantity": "Menge",
+
+    "add_to_cart": "Zum Warenkorb hinzufügen",
+
+    "description": {
+      "main": "Bitte geben Sie die Artikel und Mengen an, die Sie bestellen möchten. Die Verfügbarkeit der Artikel wird nach Senden des Formulars überprüft. Die angegeben Artikel werden Ihrem Warenkorb hinzugefügt und gegebenenfalls mit den bereits dort enthaltenen Artikeln zusammengefasst."
+    }
+  },
+
+  "error": {
+    "VIOLATION::FEBF_UNKNOWN_PRODUCT_NUMBER_ERROR": "Bitte geben Sie eine gültige Produktnummer ein",
+    "VIOLATION::FEBF_PRODUCT_UNAVAILABLE_ERROR": "Dieses Produkt ist aktuell nicht verfügbar",
+    "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Bitte geben Sie eine Menge ein",
+    "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Bitte geben Sie eine gültige Menge ein",
+    "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "Die eingegebene Menge übersteigt unseren Lagerbestand ({{ available }} verfügbar)",
+
+    "fast_order": {
+      "empty_order": "Bitte fügen Sie mindestens ein Produkt zu Ihrer Bestellung hinzu",
+      "exceeding_stock_heading": "Die eingegebenen Mengen übersteigen unseren Lagerbestand:",
+      "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} angefragt / {{ available }} verfügbar)",
+      "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Die Inhalte Ihres Warenkorbs ({{ cartQuantity }}) zusammen mit der bestellten Menge ({{ requested }}) übersteigen unseren Lagerbestand von {{ available }}. Bitte leeren Sie Ihren Einkaufswagen oder passen Ihre Bestellung an."
+    }
+  }
+}
