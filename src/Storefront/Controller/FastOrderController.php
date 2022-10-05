@@ -99,7 +99,8 @@ class FastOrderController extends StorefrontController
             return $this->returnCustomViolations('quantityViolations', $cartQuantityViolations, $data->all());
         }
 
-        dd("Data validated", $mergedData);
+        // redirect the user to the cart page
+        return $this->redirectToRoute('frontend.checkout.cart.page');
     }
 
     /**
