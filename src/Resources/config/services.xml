@@ -8,10 +8,17 @@
 
         <service id="Febf\FastOrderPlugin\Storefront\Controller\FastOrderController" public="true">
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
+            <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
+            <argument type="service" id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator"/>
             
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
+        </service>
+
+        <service id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator">
+            <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface"/>
+            <argument type="service" id="product.repository"/>
         </service>
 
     </services>
