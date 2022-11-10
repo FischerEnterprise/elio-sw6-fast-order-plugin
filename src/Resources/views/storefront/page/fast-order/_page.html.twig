@@ -4,72 +4,78 @@
 
 {% block base_content %}
 
-	{% block fast_order_form %}
-		<form action="{{ path(formRouteName) }}" method="post" data-form-csrf-handler="true">
+    {% block fast_order_tabs %}
+        <div class="card card-tabs">
+            {% block fast_order_tabs_navigation %}
+                <div class="card-header">
+                    {% block fast_order_tabs_navigation_container %}
+                        <ul class="nav nav-tabs"
+                            id="fast-order-tabs"
+                            role="tablist">
+                            {% block fast_order_tabs_navigation_manual_form %}
+                                <li class="nav-item">
+                                    <a class="nav-link active"
+                                       id="manual-form-tab"
+                                       data-toggle="tab"
+                                       data-offcanvas-tabs="true"
+                                       href="#manual-form-tab-pane"
+                                       role="tab"
+                                       aria-controls="manual-form-tab-pane"
+                                       aria-selected="true">
+                                        <span>
+                                            {{ "fast_order_plugin.manualFormTabLabel" |trans|sw_sanitize }}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endblock %}
+                            {% block fast_order_tabs_navigation_csv_upload %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       id="csv-upload-tab"
+                                       data-toggle="tab"
+                                       data-offcanvas-tabs="true"
+                                       href="#csv-upload-tab-pane"
+                                       role="tab"
+                                       aria-controls="csv-upload-tab-pane"
+                                       aria-selected="false">
+                                        <span>{{ "fast_order_plugin.csvUploadTabLabel"|trans|sw_sanitize }}</span>
+                                    </a>
+                                </li>
+                            {% endblock %}
+                        </ul>
+                    {% endblock %}
+                </div>
+            {% endblock %}
 
-			{% block fast_order_form_csrf %}
-				{{ sw_csrf(formRouteName) }}
-			{% endblock %}
+            {% block fast_order_tabs_content %}
+                <div class="card-body">
+                    {% block fast_order_tabs_content_container %}
+                        <div class="tab-content">
+                            {% block fast_order_tabs_content_manual_form %}
+                                <div class="tab-pane fade show active"
+                                     id="manual-form-tab-pane"
+                                     role="tabpanel"
+                                     aria-labelledby="description-tab">
 
-			{% block fast_order_form_content %}
-				<div class="container">
+                                    {% sw_include '@Storefront/storefront/page/fast-order/fast-order-manual-form.html.twig' %}
 
-					<div class="row">
+                                </div>
+                            {% endblock %}
 
-						{% block fast_order_form_content_sidebar %}
+                            {% block fast_order_tabs_content_csv_upload %}
+                                <div class="tab-pane fade show"
+                                     id="csv-upload-tab-pane"
+                                     role="tabpanel"
+                                     aria-labelledby="csv-upload-tab">
 
-							<div class="col-12 col-md-4">
-								<h1>{{ 'fast_order_plugin.fast_order' |trans |striptags }}</h1>
-								<p class="mb-5 mb-md-0">
-									{{ 'fast_order_plugin.description.main' |trans |striptags }}
-								</p>
-
-								<button type="submit" class="btn btn-primary position-absolute" style="bottom: 0; left: 20px; right: 20px;">
-									{{ 'fast_order_plugin.add_to_cart' |trans |striptags }}
-								</button>
-							</div>
-
-						{% endblock %}
-
-						{% block fast_order_form_content_content %}
-
-							<div class="col-12 col-md-8 mt-3">
-
-								{% block fast_order_form_content_content_violation_alerts %}
-									{% if not (quantityViolations is empty) %}
-										{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
-										type: 'danger',
-										heading: 'error.fast_order.exceeding_stock_heading'| trans,
-										list: quantityViolations
-									} %}
-									{% endif %}
-								{% endblock %}
-
-								{% if emptyDataViolation %}
-									{% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
-										type: 'danger',
-										content: 'error.fast_order.empty_order'| trans
-									} %}
-								{% endif %}
-
-								{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-header.html.twig' %}
-
-								<div class="fast-order-form-input-list">
-									{% for i in 0..10 %}
-										{% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-row.html.twig' with { rowCount: i} %}
-									{% endfor %}
-								</div>
-
-							</div>
-
-						{% endblock %}
-
-					</div>
-
-				</div>
-			{% endblock %}
-
-		</form>
-	{% endblock %}
+                                    {% sw_include '@Storefront/storefront/page/fast-order/fast-order-csv-upload.html.twig' %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    {% endblock %}
 
 {% endblock %}

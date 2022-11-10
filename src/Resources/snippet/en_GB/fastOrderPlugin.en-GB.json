@@ -1,29 +1,41 @@
 {
-  "fast_order_plugin": {
-    "fast_order": "Fast Order",
+    "fast_order_plugin": {
+        "fast_order": "Fast Order",
+        "csv_import_headline": "Fast Order CSV Import",
+        "product_number": "Product Number",
+        "quantity": "Quantity",
+        "add_to_cart": "Add to cart",
+        "import_button_text": "Start import",
+        "description": {
+            "main": "Please enter the articles and quantities you want to order. The availability of the article is checked after submitting the form. Adding the entered items to your cart, will merge them with your current cart contents.",
+            "csv_import": "Please select your CSV file and choose the product number and amount columns to import data."
+        },
+        "manualFormTabLabel": "Manual Input",
+        "csvUploadTabLabel": "Upload CSV",
 
-    "product_number": "Product Number",
-    "quantity": "Quantity",
+        "csvInputLabel": "Choose your CSV-File",
+        "productNumberColumnSelectLabel": "Product number column",
+        "amountColumnSelectLabel": "Amount column",
 
-    "add_to_cart": "Add to cart",
+        "errors": {
+            "file-input--missing-file": "A file must be selected",
+            "file-input--too-many-files": "Only one file can be selected",
+            "file-input--invalid-file": "Only CSV files can be selected",
 
-    "description": {
-      "main": "Please enter the articles and quantities you want to order. The availability of the article is checked after submitting the form. Adding the entered items to your cart, will merge them with your current cart contents."
+            "import-data--invalid-qtty": "Your import contains invalid quantities"
+        }
+    },
+    "error": {
+        "VIOLATION::FEBF_UNKNOWN_PRODUCT_NUMBER_ERROR": "Please provide a valid product number",
+        "VIOLATION::FEBF_PRODUCT_UNAVAILABLE_ERROR": "This product is currently not available",
+        "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Please provide a quantity",
+        "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Please provide a valid quantity",
+        "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The chosen quantity exceeds our stock ({{ available }} available)",
+        "fast_order": {
+            "empty_order": "Please add at least one product to your order",
+            "exceeding_stock_heading": "The chosen quantities exceed our stock:",
+            "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
+            "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
+        }
     }
-  },
-
-  "error": {
-    "VIOLATION::FEBF_UNKNOWN_PRODUCT_NUMBER_ERROR": "Please provide a valid product number",
-    "VIOLATION::FEBF_PRODUCT_UNAVAILABLE_ERROR": "This product is currently not available",
-    "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Please provide a quantity",
-    "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Please provide a valid quantity",
-    "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The choosen quantity exceeds our stock ({{ available }} available)",
-
-    "fast_order": {
-      "empty_order": "Please add at least one product to your order",
-      "exceeding_stock_heading": "The choosen quantities exceed our stock:",
-      "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
-      "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
-    }
-  }
 }
