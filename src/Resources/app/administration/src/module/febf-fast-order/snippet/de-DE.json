@@ -1,0 +1,30 @@
+{
+    "febf-fast-order": {
+        "general": {
+            "mainMenuItemGeneral": "Schnellbestellungen",
+            "descriptionTextModule": "Zeige alle Schnellbestellungsaktionen hier an"
+        },
+
+        "list": {
+            "settingsButtonText": "Einstellungen",
+
+            "column": {
+                "sessionId": "Session ID",
+                "type": "Art"
+            },
+
+            "type": {
+                "t_add_to_cart": "Zum Warenkorb hinzugefügt"
+            }
+        },
+
+        "details": {
+            "backButtonText": "Zurück",
+
+            "column": {
+                "productNumber": "Produktnummer",
+                "amount": "Menge"
+            }
+        }
+    }
+}

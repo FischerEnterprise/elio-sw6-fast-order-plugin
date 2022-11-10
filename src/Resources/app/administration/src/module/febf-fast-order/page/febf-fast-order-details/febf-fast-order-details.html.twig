@@ -1,0 +1,43 @@
+{% block febf_fast_order_details %}
+
+    <sw-page class="febf-fast-order-details">
+
+        <template #smart-bar-actions>
+            <sw-button :routerLink="{ name: 'febf.fast_order.list' }">
+                {{ $tc('febf-fast-order.details.backButtonText') }}
+            </sw-button>
+        </template>
+
+        <template #content>
+
+            <sw-card-view>
+                <sw-card v-if="fastOrderLog" :title="'Session ID: ' + fastOrderLog.sessionId">
+                    <template v-slot:header-right>
+                        <sw-label
+                            :dismissable="false"
+                            appearance="pill"
+                        >
+                            {{ $t('febf-fast-order.list.type.' + fastOrderLog.type) }}
+                        </sw-label>
+                    </template>
+
+                    <template v-slot:subtitle>
+                        <sw-time-ago :date="fastOrderLog.createdAt"></sw-time-ago>
+                    </template>
+
+                    <sw-data-grid
+                        v-if="fastOrderLog.orderInfo"
+                        :data-source="fastOrderLog.orderInfo"
+                        :columns="columns"
+                        :showSelection="false"
+                        :showActions="false">
+                    </sw-data-grid>
+
+                </sw-card>
+            </sw-card-view>
+
+        </template>
+
+    </sw-page>
+
+{% endblock %}

@@ -14,15 +14,26 @@
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
             <argument type="service" id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator"/>
             <argument type="service" id="Febf\FastOrderPlugin\Services\FastOrderDataService"/>
-            
+
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
 
+        <service id="Febf\FastOrderPlugin\Services\FastOrderDataService">
+            <argument type="service" id="product.repository" />
+            <argument type="service" id="febf_fast_order_log.repository" />
+            <argument type="service" id="Shopware\Core\Checkout\Cart\LineItemFactoryRegistry" />
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService" />
+        </service>
+
         <service id="Febf\FastOrderPlugin\Validation\FastOrderFormValidator">
             <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface"/>
             <argument type="service" id="product.repository"/>
+        </service>
+
+        <service id="Febf\FastOrderPlugin\Content\FastOrderLog\FastOrderLogDefinition">
+            <tag name="shopware.entity.definition" entity="febf_fast_order_log" />
         </service>
 
     </services>

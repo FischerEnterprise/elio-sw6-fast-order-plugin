@@ -4,7 +4,7 @@
             <input name="{{ fieldName }}"
                    type="{{ type ?? 'text'}}"
                    id="{{ fieldName }}"
-                   value="{{ formViolations.getInputData()[fieldName] }}" {# TODO: check data persistance #}
+                   value="{{ formViolations.getInputData()[fieldName] }}"
                    placeholder="{{ placeholder|trans }}"
                    {% if required %}required="required"{% endif %}
                    class="form-control{% if formViolations.getViolations( '/' ~ fieldName ) is not empty %} is-invalid{% endif %}"/>

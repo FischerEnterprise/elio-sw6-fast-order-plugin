@@ -1,0 +1,41 @@
+{% block febf_fast_order_list %}
+    <sw-page class="febf-bundle-list">
+
+        {% block febf_fast_order_list_smart_bar_actions %}
+            <template #smart-bar-actions>
+                <sw-button variant="primary" :routerLink="{ name: 'febf.fast_order.settings' }">
+                    <sw-icon name="default-action-settings" color="#fff" :small="true"></sw-icon>
+                    {{ $t('febf-fast-order.list.settingsButtonText') }}
+                </sw-button>
+            </template>
+        {% endblock %}
+
+        <template #content>
+
+            {% block febf_fast_order_list_content %}
+                <sw-entity-listing
+                    v-if="fastOrderLogs"
+                    :items="fastOrderLogs"
+                    :repository="repository"
+                    :showSelection="false"
+                    :columns="columns"
+                    detailRoute="febf.fast_order.details">
+
+                    {% block febf_fast_order_list_content_columns_type %}
+                        <template #column-type="{ item }">
+                            <sw-label
+                                :dismissable="false"
+                                appearance="pill"
+                            >
+                                {{ $t('febf-fast-order.list.type.' + item.type) }}
+                            </sw-label>
+                        </template>
+                    {% endblock %}
+
+                </sw-entity-listing>
+            {% endblock %}
+
+        </template>
+
+    </sw-page>
+{% endblock %}

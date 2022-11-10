@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Febf\FastOrderPlugin\Services;
 
+use ECSPrefix20211002\Nette\Neon\Entity;
+use Febf\FastOrderPlugin\Content\FastOrderLog\FastOrderLogEntity;
 use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
+use Psalm\Issue\CircularReference;
 use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Checkout\Cart\LineItem\LineItem;
 use Shopware\Core\Checkout\Cart\LineItemFactoryRegistry;
@@ -19,12 +22,14 @@ class FastOrderDataService
 {
 
     private EntityRepository $productRepository;
+    private EntityRepository $fastOrderLogRepository;
     private LineItemFactoryRegistry $lineItemFactory;
     private CartService $cartService;
 
-    public function __construct(EntityRepository $productRepository, LineItemFactoryRegistry $lineItemFactory, CartService $cartService)
+    public function __construct(EntityRepository $productRepository, EntityRepository $fastOrderLogRepository, LineItemFactoryRegistry $lineItemFactory, CartService $cartService)
     {
         $this->productRepository = $productRepository;
+        $this->fastOrderLogRepository = $fastOrderLogRepository;
         $this->lineItemFactory = $lineItemFactory;
         $this->cartService = $cartService;
     }
@@ -161,8 +166,24 @@ class FastOrderDataService
         // add line items for new items
         $this->cartService->add($cart, $newLineItems, $salesChannelContext);
 
+        // create fast order log entity
+        $this->createLogEntity($mergedData, $salesChannelContext);
+
         // return no violations
         return [];
+    }
+
+    private function createLogEntity(array $orderInfo, SalesChannelContext $salesChannelContext): void {
+        $sessionId = $_SESSION['_sf2_attributes']['sessionId'];
+        $type = FastOrderLogEntity::TYPE_ADD_TO_CART;
+
+        $orderInfoArray = $this->createOrderInfoArray($orderInfo, $salesChannelContext);
+
+        $this->fastOrderLogRepository->create([[
+            'sessionId' => $sessionId,
+            'type' => $type,
+            'orderInfo' => $orderInfoArray,
+        ]], $salesChannelContext->getContext());
     }
 
     /**
@@ -201,5 +222,20 @@ class FastOrderDataService
     private function getQuantityFieldName(int $index): string
     {
         return FastOrderFormValidator::FORM_FIELD_PREFIX . FastOrderFormValidator::FORM_FIELD_QTTY_NAME . strval($index);
+    }
+
+    private function createOrderInfoArray(array $orderInfo, SalesChannelContext $context): array
+    {
+        return array_map(function ($productNumber, $amount) use ($context) {
+            $criteria = new Criteria();
+            $criteria->addFilter(new EqualsFilter('productNumber', $productNumber));
+            $product = $this->productRepository->search($criteria, $context->getContext())->getEntities()->first();
+
+            return [
+                "productNumber" => $productNumber,
+                "amount" => $amount,
+                "id" => $product->id
+            ];
+        }, array_keys($orderInfo), array_values($orderInfo));
     }
 }

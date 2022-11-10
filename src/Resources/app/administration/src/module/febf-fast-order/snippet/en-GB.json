@@ -1,0 +1,30 @@
+{
+    "febf-fast-order": {
+        "general": {
+            "mainMenuItemGeneral": "Fast Orders",
+            "descriptionTextModule": "Display all fast order form actions here"
+        },
+
+        "list": {
+            "settingsButtonText": "Settings",
+
+            "column": {
+                "sessionId": "Session ID",
+                "type": "Type"
+            },
+
+            "type": {
+                "t_add_to_cart": "Added to cart"
+            }
+        },
+
+        "details": {
+            "backButtonText": "Back",
+
+            "column": {
+                "productNumber": "Product Number",
+                "amount": "Amount"
+            }
+        }
+    }
+}
