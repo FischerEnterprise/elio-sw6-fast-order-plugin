@@ -1,24 +1,13 @@
 import Plugin from "src/plugin-system/plugin.class";
 import PluginOptionCheck from "../extensions/plugin-option-check";
+import CsvUploadColumnGuesser from "./csv-upload-column-guesser";
 
 export default class FastOrderCsvUploadPlugin extends Plugin {
 
     static DOM_CLASS_INVALID = 'is-invalid';
     static DOM_CLASS_VALID = 'is-valid';
 
-    static requiredOptions = [
-        "columnSelectElements.productNumber",
-        "columnSelectElements.amount",
-        "invalidFeedbackElements.csvFileInput",
-        "invalidFeedbackElements.productNumber",
-        "invalidFeedbackElements.amount",
-        "manualFormFieldIdSchemas.productNumber",
-        "manualFormFieldIdSchemas.amount",
-        "csvInputLabel",
-        "importButton",
-        "manualInputFormTabControl",
-        "manualInputFormInputList"
-    ];
+    static requiredOptions = ["columnSelectElements.productNumber", "columnSelectElements.amount", "invalidFeedbackElements.csvFileInput", "invalidFeedbackElements.productNumber", "invalidFeedbackElements.amount", "manualFormFieldIdSchemas.productNumber", "manualFormFieldIdSchemas.amount", "csvInputLabel", "importButton", "manualInputFormTabControl", "manualInputFormInputList"];
 
     static options = {
         errorTexts: {
@@ -26,27 +15,28 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
             'file-input--too-many-files': 'Only one file can be selected',
             'file-input--invalid-file': 'Only CSV files can be selected',
 
-            'import-data--invalid-qtty': 'Your import contains invalid quantities'
+            'import-data--invalid-qtty': 'Your import contains invalid quantities',
+
+            'import-data--guess-failed--product-number': 'Failed to guess the product number column. Maybe your imported file is invalid?',
+            'import-data--guess-failed--quantity': 'Failed to guess the quantity column. Maybe your imported file is invalid?',
+            'import-data--guess-failed--both': 'Failed to guess the product number and quantity columns. Maybe your imported file is invalid?',
         },
 
+        importGuessSuccessText: 'Successfully guessed column and quantity columns for your import',
+
         columnSelectElements: {
-            productNumber: null,
-            amount: null
+            productNumber: null, amount: null
         },
 
         invalidFeedbackElements: {
-            csvFileInput: null,
-            productNumber: null,
-            amount: null
+            csvFileInput: null, productNumber: null, amount: null
         },
 
         manualFormFieldIdSchemas: {
-            productNumber: null,
-            amount: null
+            productNumber: null, amount: null
         },
 
-        csvInputLabel: null,
-        importButton: null,
+        csvInputLabel: null, importButton: null,
 
         manualInputFormTabControl: null,
 
@@ -94,8 +84,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
     _checkRequiredElements(requiredElements) {
         Object.keys(requiredElements).forEach(code => {
-            if (!requiredElements[code])
-                throw new Error(`Could not find '${code}' for plugin ${this.constructor.name}`);
+            if (!requiredElements[code]) throw new Error(`Could not find '${code}' for plugin ${this.constructor.name}`);
         })
     }
 
@@ -153,8 +142,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
     _csvFileInputChanged(event) {
         // only run if target is the plugin's csv file input
-        if (event.target !== this._elements.csvFileInput)
-            return;
+        if (event.target !== this._elements.csvFileInput) return;
 
         // clear previous error messages
         this._clearControlError(this._elements.csvFileInput, this._elements.invalidFeedback.csvFileInput);
@@ -176,6 +164,31 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
             this._addColumnSelectOptions();
             this._enableColumnSelects();
             this._elements.csvInputLabel.innerText = this._elements.csvFileInput.files[0].name;
+
+            // try to guess columns for import
+            const guessedProductNumberColumn = CsvUploadColumnGuesser.GuessProductNumberColumn(this._importData.data);
+            const guessedQuantityColumn = CsvUploadColumnGuesser.GuessQuantityColumn(this._importData.data);
+
+            // update column selects with guessed values
+            this._elements.productNumberColumnSelect.value = guessedProductNumberColumn;
+            this._elements.amountColumnSelect.value = guessedQuantityColumn;
+
+            // check if guesses were both valid
+            this._checkColumnSelectStates();
+
+            // show warning if a guess failed
+            if (guessedProductNumberColumn + guessedQuantityColumn === -2) // short version to check both equal to -1
+                this._displayAlert(this.options.errorTexts['import-data--guess-failed--both'], 'danger');
+
+            else if (guessedProductNumberColumn === -1)
+                this._displayAlert(this.options.errorTexts['import-data--guess-failed--product-number'], 'danger');
+
+            else if (guessedQuantityColumn === -1)
+                this._displayAlert(this.options.errorTexts['import-data--guess-failed--quantity'], 'danger');
+
+            else
+                this._displayAlert(this.options.importGuessSuccessText, 'success');
+
         });
     }
 
@@ -184,16 +197,13 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         const files = this._elements.csvFileInput.files;
 
         // check if any files were provided
-        if (!files || files.length === 0)
-            return this._generateErrorObject('file-input--missing-file');
+        if (!files || files.length === 0) return this._generateErrorObject('file-input--missing-file');
 
         // check if more than one file was provided
-        if (files.length > 1)
-            return this._generateErrorObject('file-input--too-many-files');
+        if (files.length > 1) return this._generateErrorObject('file-input--too-many-files');
 
         // check if provided file is of type csv
-        if (files[0].type !== 'text/csv')
-            return this._generateErrorObject('file-input--invalid-file');
+        if (files[0].type !== 'text/csv') return this._generateErrorObject('file-input--invalid-file');
 
         // generate valid error object
         return this._generateErrorObject(null, true);
@@ -214,13 +224,11 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
     _clearControlError(inputElement, invalidFeedbackElement) {
         invalidFeedbackElement.innerText = '';
 
-        if (inputElement.classList.contains(FastOrderCsvUploadPlugin.DOM_CLASS_INVALID))
-            inputElement.classList.remove(FastOrderCsvUploadPlugin.DOM_CLASS_INVALID);
+        if (inputElement.classList.contains(FastOrderCsvUploadPlugin.DOM_CLASS_INVALID)) inputElement.classList.remove(FastOrderCsvUploadPlugin.DOM_CLASS_INVALID);
     }
 
     _displayControlSuccess(inputElement) {
-        if (!inputElement.classList.contains(FastOrderCsvUploadPlugin.DOM_CLASS_VALID))
-            inputElement.classList.add(FastOrderCsvUploadPlugin.DOM_CLASS_VALID);
+        if (!inputElement.classList.contains(FastOrderCsvUploadPlugin.DOM_CLASS_VALID)) inputElement.classList.add(FastOrderCsvUploadPlugin.DOM_CLASS_VALID);
     }
 
     async _processFileContents(file) {
@@ -279,23 +287,16 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
     }
 
     _checkColumnSelectStates() {
-        this._columnSelectsValid = (
-            (this._elements.productNumberColumnSelect.value >= 0) &&
-            (this._elements.amountColumnSelect.value >= 0)
-        );
+        this._columnSelectsValid = ((this._elements.productNumberColumnSelect.value >= 0) && (this._elements.amountColumnSelect.value >= 0));
 
-        if (this._columnSelectsValid)
-            this._elements.importButton.removeAttribute('disabled');
-        else
-            this._elements.importButton.setAttribute('disabled', true)
+        if (this._columnSelectsValid) this._elements.importButton.removeAttribute('disabled'); else this._elements.importButton.setAttribute('disabled', true)
     }
 
     _importButtonClicked() {
         if (!this._columnSelectsValid) return;
 
         const {valid: importDataValid, errorCode: importErrorCode} = this._validateImportData();
-        if (!importDataValid)
-            return this._displayControlError(this._elements.csvFileInput, this._elements.invalidFeedback.csvFileInput, importErrorCode);
+        if (!importDataValid) return this._displayControlError(this._elements.csvFileInput, this._elements.invalidFeedback.csvFileInput, importErrorCode);
 
         const {productNumberIndex, amountIndex} = this._getImportColumnIndizes();
 
@@ -339,8 +340,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         // check quantity column of the import
         for (let i = 0; i < this._importData.data.length; i++) {
             const value = this._importData.data[i][amountIndex];
-            if (Number.isNaN(Number.parseInt(value)))
-                return this._generateErrorObject('import-data--invalid-qtty');
+            if (Number.isNaN(Number.parseInt(value))) return this._generateErrorObject('import-data--invalid-qtty');
         }
 
         // data seems to be valid
@@ -357,5 +357,35 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
     _clearFileInput() {
         this._elements.csvFileInput.value = null;
         this._elements.csvInputLabel.innerText = this._defaultCsvInputLabelText;
+    }
+
+    _displayAlert(text, type) {
+        const alert = document.createElement("div");
+        alert.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show');
+        alert.role = "alert";
+
+        const alertContentContainer = document.createElement("div");
+        alertContentContainer.classList.add('alert-content-container');
+
+        const alertContent = document.createElement("div");
+        alertContent.classList.add('alert-content', 'py-2');
+        alertContent.innerText = text;
+
+        const dismissAlertButton = document.createElement("button");
+        dismissAlertButton.type = "button";
+        dismissAlertButton.classList.add("close");
+        dismissAlertButton.ariaLabel = "Close";
+        dismissAlertButton.dataset.dismiss = "alert";
+
+        const buttonContent = document.createElement("span");
+        buttonContent.ariaHidden = "true";
+        buttonContent.innerHTML = "&times;";
+
+        dismissAlertButton.append(buttonContent);
+
+        alertContentContainer.append(alertContent, dismissAlertButton);
+        alert.append(alertContentContainer);
+
+        this._elements.csvFileInput.closest(".container").append(alert);
     }
 }
