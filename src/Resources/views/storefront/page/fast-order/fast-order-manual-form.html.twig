@@ -1,5 +1,19 @@
 {% block fast_order_form %}
 
+
+
+    {% set fastOrderAdjustableFormPluginOptions = {
+        placeholders: {
+            productNumber: 'fast_order_plugin.product_number' |trans |striptags,
+            amount: 'fast_order_plugin.quantity' |trans |striptags,
+        },
+
+        fieldNameSchemas: {
+            productNumber: 'fast-order-article-$i',
+            amount: 'fast-order-qtty-$i'
+        }
+    } %}
+
     <form action="{{ path(formRouteName) }}" method="post" data-form-csrf-handler="true">
 
         {% block fast_order_form_csrf %}
@@ -13,10 +27,10 @@
 
                     {% block fast_order_form_content_sidebar %}
 
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-4" style="min-height: 300px">
                             <h1>{{ 'fast_order_plugin.fast_order' |trans |striptags }}</h1>
                             <p class="mb-5 mb-md-0">
-                                {{ 'fast_order_plugin.description.main' |trans |striptags }}
+                                {{ config('FastOrderPlugin.config.fastOrderCsvImportInfoText') |striptags }}
                             </p>
 
                             <button type="submit" class="btn btn-primary position-absolute"
@@ -50,10 +64,17 @@
 
                             {% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-header.html.twig' %}
 
-                            <div class="fast-order-form-input-list">
-                                {% for i in 0..10 %}
-                                    {% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-row.html.twig' with { rowCount: i} %}
-                                {% endfor %}
+                            <div class="fast-order-form-input-list" data-fast-order-adjustable-form-plugin
+                                 data-fast-order-adjustable-form-plugin-options="{{ fastOrderAdjustableFormPluginOptions |json_encode }}">
+                                {% if formViolations.getInputData() %}
+                                    {% set i=0 %}
+                                    {% for fieldName, value in formViolations.getInputData() %}
+                                        {% if fieldName starts with 'fast-order-article' %}
+                                            {% sw_include '@FastOrderPlugin/element/fast-order-form/fast-order-form-row.html.twig' with { rowCount: i} %}
+                                            {% set i=i+1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             </div>
 
                         </div>

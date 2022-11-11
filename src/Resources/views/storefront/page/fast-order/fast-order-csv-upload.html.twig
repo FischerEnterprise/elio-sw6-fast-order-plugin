@@ -9,7 +9,7 @@
                         <div class="col-12 col-md-4" style="min-height: 300px;">
                             <h1>{{ 'fast_order_plugin.csv_import_headline' |trans |striptags }}</h1>
                             <p class="mb-5 mb-md-0">
-                                {{ 'fast_order_plugin.description.csv_import' |trans |striptags }}
+                                {{ config('FastOrderPlugin.config.fastOrderCsvImportInfoText') |striptags }}
                             </p>
 
                             <button type="button" class="btn btn-primary position-absolute"
@@ -25,11 +25,11 @@
                         {% set fastOrderCsvUploadPluginOptions = {
 
                             errorTexts: {
-                                'file-input--missing-file': 'fast_order_plugin.errors.file-input.missing-file' |trans |striptags,
-                                'file-input--too-many-files': 'fast_order_plugin.errors.file-input.too-many-files' |trans |striptags,
-                                'file-input--invalid-file': 'fast_order_plugin.errors.file-input.invalid-file' |trans |striptags,
+                                'file-input--missing-file': 'fast_order_plugin.errors.file-input--missing-file' |trans |striptags,
+                                'file-input--too-many-files': 'fast_order_plugin.errors.file-input--too-many-files' |trans |striptags,
+                                'file-input--invalid-file': 'fast_order_plugin.errors.file-input--invalid-file' |trans |striptags,
 
-                                'import-data--invalid-qtty': 'fast_order_plugin.errors.import-data.invalid-qtty' |trans |striptags
+                                'import-data--invalid-qtty': 'fast_order_plugin.errors.import-data--invalid-qtty' |trans |striptags
                             },
 
                             columnSelectElements: {
@@ -51,7 +51,8 @@
                                 amount: 'fast-order-qtty-$i'
                             },
 
-                            manualInputFormTabControl: '#manual-form-tab'
+                            manualInputFormTabControl: '#manual-form-tab',
+                            manualInputFormInputList: '.fast-order-form-input-list'
                         } %}
 
                         <div class="container col-12 col-md-8">

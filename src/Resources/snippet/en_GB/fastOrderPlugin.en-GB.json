@@ -6,10 +6,6 @@
         "quantity": "Quantity",
         "add_to_cart": "Add to cart",
         "import_button_text": "Start import",
-        "description": {
-            "main": "Please enter the articles and quantities you want to order. The availability of the article is checked after submitting the form. Adding the entered items to your cart, will merge them with your current cart contents.",
-            "csv_import": "Please select your CSV file and choose the product number and amount columns to import data."
-        },
         "manualFormTabLabel": "Manual Input",
         "csvUploadTabLabel": "Upload CSV",
 

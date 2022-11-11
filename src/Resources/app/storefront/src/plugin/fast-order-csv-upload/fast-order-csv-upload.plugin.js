@@ -1,4 +1,5 @@
 import Plugin from "src/plugin-system/plugin.class";
+import PluginOptionCheck from "../extensions/plugin-option-check";
 
 export default class FastOrderCsvUploadPlugin extends Plugin {
 
@@ -11,11 +12,12 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         "invalidFeedbackElements.csvFileInput",
         "invalidFeedbackElements.productNumber",
         "invalidFeedbackElements.amount",
-        "manualFormFieldSchemas.productNumber",
-        "manualFormFieldSchemas.amount",
+        "manualFormFieldIdSchemas.productNumber",
+        "manualFormFieldIdSchemas.amount",
         "csvInputLabel",
         "importButton",
-        "manualInputFormTabControl"
+        "manualInputFormTabControl",
+        "manualInputFormInputList"
     ];
 
     static options = {
@@ -46,12 +48,14 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         csvInputLabel: null,
         importButton: null,
 
-        manualInputFormTabControl: null
+        manualInputFormTabControl: null,
+
+        manualInputFormInputList: null
     };
 
     init() {
         // check for required options
-        this._checkProvidedOptions();
+        PluginOptionCheck.CheckProvidedOptions(this.options, FastOrderCsvUploadPlugin.requiredOptions, this.constructor.name);
 
         // get control elements related to this plugin
         this._getRelatedControls();
@@ -66,7 +70,8 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
             '_elements.invalidFeedback.csvFileInput': this._elements.invalidFeedback.csvFileInput,
             '_elements.invalidFeedback.productNumber': this._elements.invalidFeedback.productNumber,
             '_elements.invalidFeedback.amount': this._elements.invalidFeedback.amount,
-            '_elements.manualInputFormTabControl': this._elements.manualInputFormTabControl
+            '_elements.manualInputFormTabControl': this._elements.manualInputFormTabControl,
+            '_elements.manualInputFormInputList': this._elements.manualInputFormInputList
         });
 
         // store default label text
@@ -85,33 +90,6 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
         // add event listeners
         this._addListeners();
-    }
-
-    _checkProvidedOptions(rootOptionsElement = this.options, keysToCheck = FastOrderCsvUploadPlugin.requiredOptions, keyPrefix = '') {
-        // object to store keys that need to be processed on the next recursion
-        const toCheckNext = {};
-
-        // iterate all provided keys
-        keysToCheck.forEach(key => {
-            // if key includes a dot, prepare it for next recursion
-            if (key.includes('.')) {
-                const [prefix, ...parts] = key.split('.'); // split prefix from the remaining key
-                if (!(prefix in toCheckNext)) toCheckNext[prefix] = []; // create empty array in toCheckNext if this is the first key on that namespace
-                toCheckNext[prefix].push(parts.join('.')); // add remaining key to check for next recursion
-                return; // don't do anything else in this recursion
-            }
-
-            // if key doesn't include a dot, check if it exists on the current root options element
-            if (rootOptionsElement[key] === null)
-                throw new Error(`Required option '${keyPrefix + key}' missing for plugin ${this.constructor.name}`);
-        });
-
-        // if entries in toCheckNext exist, process them
-        if (Object.keys(toCheckNext).length > 0) {
-            Object.keys(toCheckNext).forEach(nextKeyPrefix => {
-                this._checkProvidedOptions(this.options[nextKeyPrefix], toCheckNext[nextKeyPrefix], `${keyPrefix}${nextKeyPrefix}.`);
-            })
-        }
     }
 
     _checkRequiredElements(requiredElements) {
@@ -141,6 +119,9 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
         // get csv input label
         this._elements.manualInputFormTabControl = document.querySelector(this.options.manualInputFormTabControl);
+
+        // get csv input label
+        this._elements.manualInputFormInputList = document.querySelector(this.options.manualInputFormInputList);
 
         // get product number select input
         this._elements.productNumberColumnSelect = document.querySelector(this.options.columnSelectElements.productNumber);
@@ -321,9 +302,15 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         const productNumberInputId = (index) => this.options.manualFormFieldIdSchemas.productNumber.replace(/\$i/, index);
         const amountInputId = (index) => this.options.manualFormFieldIdSchemas.amount.replace(/\$i/, index);
 
+        // clear all form input rows (they will be added back when injecting imported data)
+        this._elements.manualInputFormInputList.innerHTML = '';
+
         this._importData.data.forEach((dataset, index) => {
             const productNumber = dataset[productNumberIndex];
             const amount = dataset[amountIndex];
+
+            // create related input row
+            this._elements.manualInputFormInputList.__plugins.get('FastOrderAdjustableFormPlugin').appendFormRow();
 
             const productNumberInput = document.getElementById(productNumberInputId(index));
             const amountInput = document.getElementById(amountInputId(index));
@@ -331,6 +318,9 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
             productNumberInput.value = productNumber;
             amountInput.value = amount;
         });
+
+        // add another form row to enable the user to add more data
+        this._elements.manualInputFormInputList.__plugins.get('FastOrderAdjustableFormPlugin').appendFormRow();
 
         //todo: show confirmation modal
 

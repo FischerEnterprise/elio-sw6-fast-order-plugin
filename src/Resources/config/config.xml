@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+
+    <card>
+        <title>Configuration</title>
+        <title lang="de-DE">Konfiguration</title>
+
+        <input-field type="textarea">
+            <name>fastOrderFormInfoText</name>
+            <copyable>true</copyable>
+            <label>Fast Order Form Info Text</label>
+            <label lang="de-DE">Beschreibung des Formulars für Schnellbestellungen</label>
+            <helpText>This text will be shown on the fast order form</helpText>
+            <helpText lang="de-DE">Dieser Text wird neben dem Formular für Schnellbestellungen angezeigt</helpText>
+        </input-field>
+
+        <input-field type="textarea">
+            <name>fastOrderCsvImportInfoText</name>
+            <copyable>true</copyable>
+            <label>Fast Order CSV-Import Info Text</label>
+            <label lang="de-DE">Beschreibung des CSV-Imports</label>
+            <helpText>This text will be shown on the fast order csv import</helpText>
+            <helpText lang="de-DE">Dieser Text wird neben dem CSV-Upload für Schnellbestellungen angezeigt</helpText>
+        </input-field>
+
+    </card>
+</config>

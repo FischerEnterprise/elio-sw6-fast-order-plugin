@@ -1,0 +1,62 @@
+{% block sw_settings_security_index %}
+    <sw-page class="sw-settings-security">
+
+        {% block sw_settings_security_search_bar %}
+            <template slot="search-bar">
+                <sw-search-bar>
+                </sw-search-bar>
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_smart_bar_header %}
+            <template slot="smart-bar-header">
+                {% block sw_settings_security_smart_bar_header_title %}
+                    <h2>
+                        {% block sw_settings_security_smart_bar_header_title_text %}
+                            {{ $tc('sw-settings.index.title') }}
+                            <sw-icon name="small-arrow-medium-right" small>
+                            </sw-icon>
+                            {{ $tc('sw-settings-security.general.textHeadline') }}
+                        {% endblock %}
+                    </h2>
+                {% endblock %}
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_smart_bar_actions %}
+            <template slot="smart-bar-actions">
+                {% block sw_settings_security_actions_save %}
+                    <sw-button-process
+                        class="febf-settings-fast_order__save-action"
+                        :isLoading="isLoading"
+                        :processSuccess="isSaveSuccessful"
+                        :disabled="isLoading"
+                        variant="primary"
+                        @process-finish="saveFinish"
+                        @click="onSave">
+                        {{ $tc('febf-settings-fast_order.general.buttonSave') }}
+                    </sw-button-process>
+                {% endblock %}
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_content %}
+            <template slot="content">
+                <sw-card-view>
+                    <sw-card :title="$tc('febf-settings-fast_order.general.cardTitle')" :isLoading="isLoading">
+                            <sw-field
+                                type="checkbox"
+                                :name="fix"
+                                :label="$tc('sw-settings-security.fixes.' + fix + '.label')"
+                                :helpText="$tc('sw-settings-security.fixes.' + fix + '.tooltip')"
+                            ></sw-field>
+                    </sw-card>
+
+                    <sw-empty-state v-else
+                                    :title="$tc('sw-settings-security.general.noFixes')">
+                    </sw-empty-state>
+                </sw-card-view>
+            </template>
+        {% endblock %}
+    </sw-page>
+{% endblock %}
