@@ -26,6 +26,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         "csvInputLabel",
         "importButton",
         "manualInputFormTabControl",
+        "csvImportTabControl",
         "manualInputFormInputList"
     ];
 
@@ -63,6 +64,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
         csvInputLabel: null, importButton: null,
 
         manualInputFormTabControl: null,
+        csvImportTabControl: null,
 
         manualInputFormInputList: null
     };
@@ -88,6 +90,7 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
             '_elements.invalidFeedback.productNumber': this._elements.invalidFeedback.productNumber,
             '_elements.invalidFeedback.amount': this._elements.invalidFeedback.amount,
             '_elements.manualInputFormTabControl': this._elements.manualInputFormTabControl,
+            '_elements.csvImportTabControl': this._elements.csvImportTabControl,
             '_elements.manualInputFormInputList': this._elements.manualInputFormInputList
         });
 
@@ -107,6 +110,10 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
         // add event listeners
         this._addListeners();
+
+        // switch to csv import tab, if hash is set
+        if (window.location.hash === '#csv-import')
+            this._elements.csvImportTabControl.click();
     }
 
     /**
@@ -145,6 +152,9 @@ export default class FastOrderCsvUploadPlugin extends Plugin {
 
         // get csv input label
         this._elements.manualInputFormTabControl = document.querySelector(this.options.manualInputFormTabControl);
+
+        // get csv input label
+        this._elements.csvImportTabControl = document.querySelector(this.options.csvImportTabControl);
 
         // get csv input label
         this._elements.manualInputFormInputList = document.querySelector(this.options.manualInputFormInputList);
