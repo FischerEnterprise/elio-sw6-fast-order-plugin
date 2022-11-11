@@ -4,8 +4,8 @@
 
     {% set fastOrderAdjustableFormPluginOptions = {
         placeholders: {
-            productNumber: 'fast_order_plugin.product_number' |trans |striptags,
-            amount: 'fast_order_plugin.quantity' |trans |striptags,
+            productNumber: 'fast-order-plugin.orderTable.productNumberHeader' |trans |striptags,
+            amount: 'fast-order-plugin.orderTable.quantityHeader' |trans |striptags,
         },
 
         fieldNameSchemas: {
@@ -28,14 +28,14 @@
                     {% block fast_order_form_content_sidebar %}
 
                         <div class="col-12 col-md-4" style="min-height: 300px">
-                            <h1>{{ 'fast_order_plugin.fast_order' |trans |striptags }}</h1>
+                            <h1>{{ 'fast-order-plugin.title' |trans |striptags }}</h1>
                             <p class="mb-5 mb-md-0">
                                 {{ config('FastOrderPlugin.config.fastOrderCsvImportInfoText') |striptags }}
                             </p>
 
                             <button type="submit" class="btn btn-primary position-absolute"
                                     style="bottom: 0; left: 20px; right: 20px;">
-                                {{ 'fast_order_plugin.add_to_cart' |trans |striptags }}
+                                {{ 'fast-order-plugin.addToCartButtonText' |trans |striptags }}
                             </button>
                         </div>
 
@@ -49,7 +49,7 @@
                                 {% if not (quantityViolations is empty) %}
                                     {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
                                         type: 'danger',
-                                        heading: 'error.fast_order.exceeding_stock_heading'| trans,
+                                        heading: 'error.fast-order.exceeding-stock--heading'| trans,
                                         list: quantityViolations
                                     } %}
                                 {% endif %}
@@ -58,7 +58,7 @@
                             {% if emptyDataViolation %}
                                 {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
                                     type: 'danger',
-                                    content: 'error.fast_order.empty_order'| trans
+                                    content: 'error.fast-order.empty-order'| trans
                                 } %}
                             {% endif %}
 

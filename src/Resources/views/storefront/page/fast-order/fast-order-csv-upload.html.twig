@@ -7,14 +7,14 @@
                     {% block fast_order_form_import_content_sidebar %}
 
                         <div class="col-12 col-md-4" style="min-height: 300px;">
-                            <h1>{{ 'fast_order_plugin.csv_import_headline' |trans |striptags }}</h1>
+                            <h1>{{ 'fast-order-plugin.csvImportHeadline' |trans |striptags }}</h1>
                             <p class="mb-5 mb-md-0">
                                 {{ config('FastOrderPlugin.config.fastOrderCsvImportInfoText') |striptags }}
                             </p>
 
                             <button type="button" class="btn btn-primary position-absolute"
                                     style="bottom: 0; left: 20px; right: 20px;" id="fastOrderImportButton">
-                                {{ 'fast_order_plugin.import_button_text' |trans |striptags }}
+                                {{ 'fast-order-plugin.importButtonText' |trans |striptags }}
                             </button>
                         </div>
 
@@ -25,11 +25,11 @@
                         {% set fastOrderCsvUploadPluginOptions = {
 
                             errorTexts: {
-                                'file-input--missing-file': 'fast_order_plugin.errors.file-input--missing-file' |trans |striptags,
-                                'file-input--too-many-files': 'fast_order_plugin.errors.file-input--too-many-files' |trans |striptags,
-                                'file-input--invalid-file': 'fast_order_plugin.errors.file-input--invalid-file' |trans |striptags,
+                                'file-input--missing-file': 'fast-order-plugin.errors.file-input--missing-file' |trans |striptags,
+                                'file-input--too-many-files': 'fast-order-plugin.errors.file-input--too-many-files' |trans |striptags,
+                                'file-input--invalid-file': 'fast-order-plugin.errors.file-input--invalid-file' |trans |striptags,
 
-                                'import-data--invalid-qtty': 'fast_order_plugin.errors.import-data--invalid-qtty' |trans |striptags
+                                'import-data--invalid-quantity': 'fast-order-plugin.errors.import-data--invalid-quantity' |trans |striptags
                             },
 
                             columnSelectElements: {
@@ -60,32 +60,33 @@
                                 <div class="input-group mb-3 col-12 col-md-4">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="fastOrderCsvInput"
-                                               aria-describedby="inputGroupFileAddon01"
+                                               aria-describedby="fastOrderCsvInputLabel"
                                                data-fast-order-csv-upload-plugin
                                                data-fast-order-csv-upload-plugin-options='{{ fastOrderCsvUploadPluginOptions |json_encode }}'>
-                                        <label class="custom-file-label"
-                                               for="fastOrderCsvInput" id="fastOrderCsvInputLabel">{{ 'fast_order_plugin.csvInputLabel' |trans |striptags }}</label>
+                                        <label class="custom-file-label" for="fastOrderCsvInput" id="fastOrderCsvInputLabel">
+                                            {{ 'fast-order-plugin.csvInputLabel' |trans |striptags }}
+                                        </label>
                                     </div>
                                     <div id="fastOrderFileInputInvalidFeedback" class="invalid-feedback d-block"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="sr-only" for="fastOrderProductNumberColumnSelect">
-                                        {{ 'fast_order_plugin.productNumberColumnSelectLabel' |trans |striptags }}
+                                        {{ 'fast-order-plugin.productNumberColumnSelectLabel' |trans |striptags }}
                                     </label>
                                     <select class="custom-select" id="fastOrderProductNumberColumnSelect">
                                         <option selected value="-1">
-                                            {{ 'fast_order_plugin.productNumberColumnSelectLabel' |trans |striptags }}
+                                            {{ 'fast-order-plugin.productNumberColumnSelectLabel' |trans |striptags }}
                                         </option>
                                     </select>
                                     <div id="fastOrderProductNumberColumnSelectInvalidFeedback" class="invalid-feedback"></div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="sr-only" for="fastOrderAmountColumnSelect">
-                                        {{ 'fast_order_plugin.amountColumnSelectLabel' |trans |striptags }}
+                                        {{ 'fast-order-plugin.amountColumnSelectLabel' |trans |striptags }}
                                     </label>
                                     <select class="custom-select" id="fastOrderAmountColumnSelect">
                                         <option selected value="-1">
-                                            {{ 'fast_order_plugin.amountColumnSelectLabel' |trans |striptags }}
+                                            {{ 'fast-order-plugin.amountColumnSelectLabel' |trans |striptags }}
                                         </option>
                                     </select>
                                     <div id="fastOrderAmountColumnSelectInvalidFeedback" class="invalid-feedback"></div>

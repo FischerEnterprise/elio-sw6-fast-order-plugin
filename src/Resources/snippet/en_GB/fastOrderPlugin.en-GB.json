@@ -1,11 +1,21 @@
 {
-    "fast_order_plugin": {
-        "fast_order": "Fast Order",
-        "csv_import_headline": "Fast Order CSV Import",
-        "product_number": "Product Number",
-        "quantity": "Quantity",
-        "add_to_cart": "Add to cart",
-        "import_button_text": "Start import",
+    "fast-order-plugin": {
+        "title": "Fast order",
+        "csvImportHeadline": "Fast order CSV import",
+
+        "orderTable": {
+            "productNumberHeader": "Product number",
+            "quantityHeader": "Quantity"
+        },
+
+        "csvImport": {
+            "productNumberColumnSelectPlaceholder": "Product number column",
+            "quantityColumnSelectPlaceholder": "Quantity column"
+        },
+
+        "addToCartButtonText": "Add to cart",
+        "importButtonText": "Start import",
+
         "manualFormTabLabel": "Manual Input",
         "csvUploadTabLabel": "Upload CSV",
 
@@ -18,7 +28,7 @@
             "file-input--too-many-files": "Only one file can be selected",
             "file-input--invalid-file": "Only CSV files can be selected",
 
-            "import-data--invalid-qtty": "Your import contains invalid quantities"
+            "import-data--invalid-quantity": "Your import contains invalid quantities"
         }
     },
     "error": {
@@ -27,11 +37,11 @@
         "VIOLATION::FEBF_MISSING_QUANTITY_ERROR": "Please provide a quantity",
         "VIOLATION::FEBF_INVALID_QUANTITY_ERROR": "Please provide a valid quantity",
         "VIOLATION::FEBF_EXCEEDING_STOCK_ERROR": "The chosen quantity exceeds our stock ({{ available }} available)",
-        "fast_order": {
-            "empty_order": "Please add at least one product to your order",
-            "exceeding_stock_heading": "The chosen quantities exceed our stock:",
-            "exceeding_stock_detail_line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
-            "combined_exceeding_stock_detail_line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
+        "fast-order": {
+            "empty-order": "Please add at least one product to your order",
+            "exceeding-stock--heading": "The chosen quantities exceed our stock:",
+            "exceeding-stock--detail-line": "{{ name }} - {{ productNumber }} ({{ requested }} requested / {{ available }} available)",
+            "combined-exceeding-stock--detail-line": "{{ name }} - {{ productNumber }}: Your current cart contents ({{ cartQuantity }}) combined with the fast order quantity ({{ requested }}) exceeds our available stock of {{ available }}. Please clear your cart or adjust your fast order."
         }
     }
 }

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Febf\FastOrderPlugin\Services;
 
-use ECSPrefix20211002\Nette\Neon\Entity;
 use Febf\FastOrderPlugin\Content\FastOrderLog\FastOrderLogEntity;
 use Febf\FastOrderPlugin\Validation\FastOrderFormValidator;
-use Psalm\Issue\CircularReference;
 use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Checkout\Cart\LineItem\LineItem;
 use Shopware\Core\Checkout\Cart\LineItemFactoryRegistry;
@@ -35,7 +33,7 @@ class FastOrderDataService
     }
 
     /**
-     * Merge and clean fast order data (no unrequired keys / no duplicates)
+     * Merge and clean fast order data (no un-required keys / no duplicates)
      *
      * @param  array<string, mixed> $data
      * @return array<string, integer>
@@ -103,7 +101,7 @@ class FastOrderDataService
             // check if merged quantity exceeds available stock
             if ($quantity > $product->getAvailableStock()) {
                 $quantityViolations[] = [
-                    'message' => 'error.fast_order.exceeding_stock_detail_line',
+                    'message' => 'error.fast-order.exceeding-stock--detail-line',
                     'args' => [
                         '{{ name }}' => $product->name,
                         '{{ productNumber }}' => $productNumber,
@@ -130,7 +128,7 @@ class FastOrderDataService
 
                 // [ELSE] add violation since quantity would exceed the available stock
                 $quantityViolations[] = [
-                    'message' => 'error.fast_order.combined_exceeding_stock_detail_line',
+                    'message' => 'error.fast-order.combined-exceeding-stock--detail-line',
                     'args' => [
                         '{{ name }}' => $product->name,
                         '{{ productNumber }}' => $productNumber,
